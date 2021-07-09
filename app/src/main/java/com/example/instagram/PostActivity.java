@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +29,9 @@ import java.io.File;
 import java.util.List;
 //The Main Activity screen is where the user can write a caption, post a picture, and post a picture
 //The Main Activity then launches the feed activity where the user can view their posts and other people's post
-public class MainActivity extends AppCompatActivity {
+public class PostActivity extends AppCompatActivity {
     Button logoutButton;
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "PostActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     private EditText meditTextDescription;
     private Button mbuttonCaptureImage;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_post);
         //Find the logoutButton
         logoutButton = findViewById(R.id.logoutButton);
         meditTextDescription = findViewById(R.id.editTextDescription);
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mbuttonFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FeedActivity.class);
+                Intent intent = new Intent(PostActivity.this, FeedActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,17 +77,18 @@ public class MainActivity extends AppCompatActivity {
                 String description = meditTextDescription.getText().toString();
                 //error handling to check and see if the description is empty. If it is then show the message "Description cannot be empty"
                 if(description.isEmpty()){
-                    Toast.makeText(MainActivity.this,"Description cannot be empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this,"Description cannot be empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(mphotoFile == null || mimageViewPostImage.getDrawable() == null  ){
-                    Toast.makeText(MainActivity.this,"There is no image!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this,"There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //otherwise get the current user
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 //call a method called savePost that will take in the description and currentUser
                 savePost(description,currentUser, mphotoFile);
+                finish();
             }
             /** Called when the user taps the Send button */
             public void sendMessage(View view) {
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(MainActivity.this, "com.codepath.fileprovider", mphotoFile);
+        Uri fileProvider = FileProvider.getUriForFile(PostActivity.this, "com.codepath.fileprovider", mphotoFile);
         //File provider wraps the photo file
         //Serving as a place to put the photo that was taken
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e != null){
                     Log.e(TAG, "Error while saving",e);
-                    Toast.makeText(MainActivity.this, "Error while saving",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, "Error while saving",Toast.LENGTH_SHORT).show();
                 }
                 Log.i(TAG, "Post save was successful ");
                 meditTextDescription.setText("");
