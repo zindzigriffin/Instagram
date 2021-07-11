@@ -30,27 +30,27 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
+        android:backgroundTint="#E91E63"
         android:text="Logout"
         tools:layout_editor_absoluteX="20dp" />
+
     <Button
         android:id="@+id/buttonCaptureImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Take a picture"/>
+        android:backgroundTint="#2476F1"
+        android:text="Take a picture" />
     <ImageView
         android:id="@+id/imageViewPostImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         tools:srcCompact="@tools:sample/avatars"/>
+
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"/>
+        android:backgroundTint="#00BCD4"
+        android:text="Submit" />
 
-    <Button
-        android:id="@+id/buttonFeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Feed" />
 </LinearLayout>

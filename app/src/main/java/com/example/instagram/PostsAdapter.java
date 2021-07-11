@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
@@ -97,10 +99,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
 //                    byte[] byteArray = baos.toByteArray();
 
-                    Intent intent = new Intent(mContext, PostDetailActivity.class);
-                    intent.putExtra("username", textViewUsername.getText());
-                    intent.putExtra("description", textViewDescription.getText());
+//                    Intent intent = new Intent(mContext, PostDetailActivity.class);
+//                    intent.putExtra("username", textViewUsername.getText());
+//                    intent.putExtra("description", textViewDescription.getText());
                     // intent.putExtra("image", byteArray);
+                    Intent intent = new Intent(mContext, PostDetailActivity.class);
+                    intent.putExtra(Post.class.getName(), Parcels.wrap(mPosts));
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("Post item", Parcels.wrap(mPosts));
+//                    intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }
             });

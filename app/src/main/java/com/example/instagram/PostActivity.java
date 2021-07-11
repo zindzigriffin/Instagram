@@ -37,7 +37,7 @@ public class PostActivity extends AppCompatActivity {
     private Button mbuttonCaptureImage;
     private ImageView mimageViewPostImage;
     private Button mbuttonSubmit;
-    private Button mbuttonFeed;
+    //private Button mbuttonFeed;
     private File mphotoFile;
     public String mphotoFileName = "photo.jpg";
 
@@ -51,7 +51,7 @@ public class PostActivity extends AppCompatActivity {
         mbuttonCaptureImage = findViewById(R.id.buttonCaptureImage);
         mimageViewPostImage = findViewById(R.id.imageViewPostImage);
         mbuttonSubmit = findViewById(R.id.buttonSubmit);
-        mbuttonFeed = findViewById(R.id.buttonFeed);
+        //mbuttonFeed = findViewById(R.id.mbuttonFeed);
         //set an onclick listener to the button capture image
         mbuttonCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,13 +59,13 @@ public class PostActivity extends AppCompatActivity {
                 launchCamera();
             }
         });
-        mbuttonFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, FeedActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mbuttonFeed.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PostActivity.this, FeedActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         //when the logoutButton is clicked call the logoutbutton method
         logoutButton.setOnClickListener(v -> {onLogoutButton();});
         //queryPosts();
