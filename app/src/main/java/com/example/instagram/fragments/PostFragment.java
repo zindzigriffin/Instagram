@@ -23,8 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.instagram.Post;
-import com.example.instagram.PostActivity;
+import com.example.instagram.models.Post;
 import com.example.instagram.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -198,10 +197,8 @@ public class PostFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if(e != null){
-                    Log.e(TAG, "Error while saving",e);
                     Toast.makeText(context, "Error while saving",Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Post save was successful ");
                 meditTextDescription.setText("");
                 //Sets a drawable as the content of this ImageView.
                 //This does Bitmap reading and decoding on the UI thread, which can cause a latency hiccup

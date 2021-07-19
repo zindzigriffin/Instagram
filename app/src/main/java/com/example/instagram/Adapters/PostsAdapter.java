@@ -1,10 +1,7 @@
-package com.example.instagram;
+package com.example.instagram.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.Activities.FeedActivity;
+import com.example.instagram.models.Post;
+import com.example.instagram.R;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -91,23 +89,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Convert image file to Bitmap
-                    // Create Bitmap variable
-                    //Bitmap bitmap = BitmapFactory.decodeFile(image.getUrl());
-                    // Create ByteArrayOutputStream and initialize
-//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
-//                    byte[] byteArray = baos.toByteArray();
-
-//                    Intent intent = new Intent(mContext, PostDetailActivity.class);
-//                    intent.putExtra("username", textViewUsername.getText());
-//                    intent.putExtra("description", textViewDescription.getText());
-                    // intent.putExtra("image", byteArray);
-                    Intent intent = new Intent(mContext, PostDetailActivity.class);
+                    Intent intent = new Intent(mContext, FeedActivity.PostDetailActivity.class);
                     intent.putExtra(Post.class.getName(), Parcels.wrap(mPosts));
-//                    Bundle bundle = new Bundle();
-//                    bundle.putParcelable("Post item", Parcels.wrap(mPosts));
-//                    intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }
             });

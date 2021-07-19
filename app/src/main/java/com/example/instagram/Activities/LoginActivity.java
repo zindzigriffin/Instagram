@@ -1,4 +1,4 @@
-package com.example.instagram;
+package com.example.instagram.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,12 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.instagram.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 //This class allows the user to sign in and login on Instagram. This screen is launched from the splash screen using an Intent
-//The login activity screen launches the Main Activity Screen
+//The login activity screen launches the Feed Activity where the user can view their timeline of posts
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
     //Create instance variables
@@ -39,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick login button");
                 //converts the username's text to a string
                 String username = editTextUsername.getText().toString();
                 //grabs the password for the user and converts it to a string
@@ -53,19 +53,16 @@ public class LoginActivity extends AppCompatActivity {
     //If the user has logged in appropriately a Success message will pop up on the screen using Toast and then goes to the Main Activity
     //Otherwise if they did not an Issue with login message pops up using Toast
     private void loginUser(String username, String password){
-        Log.i(TAG, "Attempting to login user" + username);
-        //TODO: navigate to the main activity if the user has signed in properly
+        //TODO: navigate to the feed activity if the user has signed in properly
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if(e!=null){
-                    Log.e(TAG, "Issue with login", e);
                     Toast.makeText(LoginActivity.this,"Issue with login",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 goFeedActivity();
                 Toast.makeText(LoginActivity.this,"Success",Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "login activity repeating");
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.example.instagram;
+package com.example.instagram.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.instagram.Activities.LoginActivity;
+import com.example.instagram.models.Post;
+import com.example.instagram.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -28,9 +29,10 @@ import com.parse.SaveCallback;
 
 import java.io.File;
 import java.util.List;
-//The Main Activity screen is where the user can write a caption, post a picture, and post a picture
-//The Main Activity then launches the feed activity where the user can view their posts and other people's post
+//The Post Activity screen is where the user can write a caption, post a picture, and post a picture
+//The Post Activity then launches the login activity where the user can login into their instagram account
 public class PostActivity extends AppCompatActivity {
+    //Declare the variables
     Button logoutButton;
     public static final String TAG = "PostActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
@@ -38,7 +40,6 @@ public class PostActivity extends AppCompatActivity {
     private Button mbuttonCaptureImage;
     private ImageView mimageViewPostImage;
     private Button mbuttonSubmit;
-    //private Button mbuttonFeed;
     private File mphotoFile;
     public String mphotoFileName = "photo.jpg";
 
@@ -46,30 +47,20 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        //Find the logoutButton
+        //Initialize the variables
         logoutButton = findViewById(R.id.logoutButton);
         meditTextDescription = findViewById(R.id.editTextDescription);
         mbuttonCaptureImage = findViewById(R.id.buttonCaptureImage);
         mimageViewPostImage = findViewById(R.id.imageViewPostImage);
         mbuttonSubmit = findViewById(R.id.buttonSubmit);
-        //mbuttonFeed = findViewById(R.id.mbuttonFeed);
-        //set an onclick listener to the button capture image
         mbuttonCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchCamera();
             }
         });
-//        mbuttonFeed.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(PostActivity.this, FeedActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         //when the logoutButton is clicked call the logoutbutton method
         logoutButton.setOnClickListener(v -> {onLogoutButton();});
-        //queryPosts();
         //Set an onClickListener for the submit button
         mbuttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +72,7 @@ public class PostActivity extends AppCompatActivity {
                     Toast.makeText(PostActivity.this,"Description cannot be empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //error handling to check and see if the image is empty. If it is then the show the message "There is no image to the viewer"
                 if(mphotoFile == null || mimageViewPostImage.getDrawable() == null  ){
                     Toast.makeText(PostActivity.this,"There is no image!", Toast.LENGTH_SHORT).show();
                     return;
@@ -89,15 +81,12 @@ public class PostActivity extends AppCompatActivity {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 //call a method called savePost that will take in the description and currentUser
                 savePost(description,currentUser, mphotoFile);
+                //Call the finish method when the activity is done
                 finish();
-            }
-            /** Called when the user taps the Send button */
-            public void sendMessage(View view) {
-                // Do something in response to button
             }
         });
     }
-
+    //Method to launch the camera
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -141,7 +130,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     // Returns the File for a photo stored on disk given the fileName
-    //Unambigiously identifies a resource given which is the image we captured
+    //Unambiguously identifies a resource given which is the image we captured
     public File getPhotoFileUri(String fileName) {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.

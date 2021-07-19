@@ -1,7 +1,6 @@
 package com.example.instagram.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,12 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.example.instagram.FeedActivity;
-import com.example.instagram.Post;
-import com.example.instagram.PostActivity;
-import com.example.instagram.PostsAdapter;
+import com.example.instagram.models.Post;
+import com.example.instagram.Adapters.PostsAdapter;
 import com.example.instagram.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -73,10 +69,6 @@ public class HomeFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                //fetchTimelineAsync(0);
                 queryPosts();
             }
         });
@@ -124,9 +116,6 @@ public class HomeFragment extends Fragment {
                 }
                 adapter.clear();
                 adapter.addAll(posts);
-                // save received posts to list and notify adapter of new data
-                //allPosts.addAll(posts);
-                //adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
             }
         });

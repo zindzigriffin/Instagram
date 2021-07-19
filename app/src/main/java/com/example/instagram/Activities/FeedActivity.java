@@ -1,10 +1,9 @@
-package com.example.instagram;
+package com.example.instagram.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -15,10 +14,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.instagram.models.Post;
+import com.example.instagram.Adapters.PostsAdapter;
+import com.example.instagram.R;
 import com.example.instagram.fragments.HomeFragment;
 import com.example.instagram.fragments.PostFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.LogOutCallback;
@@ -26,11 +30,12 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
+import org.parceler.Parcels;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
+//This class allows the users to see their instagram feed 
 public class FeedActivity extends AppCompatActivity {
     public static final String TAG = "FeedActivity";
     protected PostsAdapter adapter;
@@ -49,44 +54,6 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
         btnLogout = findViewById(R.id.btnLogout);
-        //Lookup the swipe container view
-//        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-//        // Setup refresh listener which triggers new data loading
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // Your code to refresh the list here.
-//                // Make sure you call swipeContainer.setRefreshing(false)
-//                // once the network request has completed successfully.
-//                //fetchTimelineAsync(0);
-//                queryPosts();
-//            }
-//        });
-//        Button btnToPostAct = findViewById(R.id.btnAddPost);
-//        btnToPostAct.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent toPost = new Intent(FeedActivity.this, PostActivity.class);
-//                startActivity(toPost);
-//            }
-//        });
-//        // Configure the refreshing colors
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-//
-//        recyclerViewPosts = findViewById(R.id.recyclerViewPosts);
-//
-//        // initialize the array that will hold posts and create a PostsAdapter
-//        allPosts = new ArrayList<>();
-//        adapter = new PostsAdapter(this, allPosts);
-//        // set the adapter on the recycler view
-//        recyclerViewPosts.setAdapter(adapter);
-//        // set the layout manager on the recycler view
-//        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this));
-//        // query posts from Parstagram
-//        queryPosts();
             context = this;
             fragmentManager = getSupportFragmentManager();
             fragment = HomeFragment.newInstance(context);
@@ -130,21 +97,6 @@ public class FeedActivity extends AppCompatActivity {
     }
 
 
-    /*public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
-                                   public void onSuccess(JSONArray json) {
-                                       // Remember to CLEAR OUT old items before appending in the new ones
-                                       adapter.clear();
-                                       // ...the data has come back, add new items to your adapter...
-                                       //adapter.addAll(Post);
-                                       // Now we call setRefreshing(false) to signal refresh has finished
-                                       swipeContainer.setRefreshing(false);
-                                   }
-        });
-    }*/
 
     //In the snippet above we form request and set options such as order, max number of posts and additional data to include.
     public void queryPosts() {
@@ -177,5 +129,41 @@ public class FeedActivity extends AppCompatActivity {
                 swipeContainer.setRefreshing(false);
             }
         });
+    }
+
+    public static class PostDetailActivity extends AppCompatActivity {
+
+        // Create variables (hint: TextView)
+        private TextView tvUsername;
+        private TextView tvDescription;
+        TextView tvDate;
+        private Post post;
+        private ImageView image;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_post_detail);
+
+            // Find views in layout
+            tvDescription = findViewById(R.id.tvDescription);
+            tvUsername = findViewById(R.id.tvUsername);
+            image = findViewById(R.id.ivImage);
+            tvDate = findViewById(R.id.tvDate);
+
+            //Parcelable parcel[] = getIntent().getParcelableArrayExtra("Post item");
+            post = Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getName()));
+
+            Glide.with(this)
+                    .load(post.getImage().getUrl())
+                    .into(image);
+
+            tvDescription.setText(post.getDescription());
+            tvUsername.setText(post.getUser().getUsername());
+            Date date = post.getCreatedAt();
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy");
+            String dateStr = format.format(date);
+            tvDate.setText(dateStr);
+        }
     }
 }

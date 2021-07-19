@@ -1,10 +1,8 @@
-package com.example.instagram;
+package com.example.instagram.models;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -12,7 +10,6 @@ import com.parse.ParseUser;
 import org.parceler.Parcel;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 @Parcel(analyze = Post.class)
 @ParseClassName("Post")
@@ -50,7 +47,7 @@ public class Post extends ParseObject {
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
+    //Method to get the time and date
     public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss z yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
